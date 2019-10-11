@@ -9,6 +9,7 @@ export default class CircularFace extends PureComponent {
     static propTypes = {
         r: PropTypes.number,
         stroke: PropTypes.string,
+        importantDates: PropTypes.arrayOf(PropTypes.number).isRequired
     }
 
 
@@ -57,7 +58,6 @@ export default class CircularFace extends PureComponent {
                     {
                         range(40).map((h, i) => {
                             if (i > 20 && i < 32) {
-                                console.log('i in 20 33', i);
                                     return <Line
                                         key={i}
                                         stroke={stroke}
@@ -69,7 +69,9 @@ export default class CircularFace extends PureComponent {
                                     />
                                 }
                             else {
-                                    return <Text
+                                    console.log((2 * Math.PI / 40 * i - Math.PI / 2 + Math.PI / 20));
+                                    return <G>
+                                        <Text
                                         key={i}
                                         fill={stroke}
                                         fontSize="10"
@@ -79,6 +81,24 @@ export default class CircularFace extends PureComponent {
                                     >
                                         {this.renderDateAccodingToIndex(i)}
                                     </Text>
+                                    {this.props.importantDates.includes(this.renderDateAccodingToIndex(i))
+                                    ?
+                                    <G
+                                        transform={{translate:`0,-3`}}
+                                    >
+                                        <Circle
+                                        r={13}
+                                        fill={'transparent'}
+                                        stroke={'#96afc7'}
+                                        strokeWidth="2"
+                                        x={((faceRadius) * Math.cos(2 * Math.PI / 40 * i - Math.PI / 2 + Math.PI / 20))}
+                                        y={((faceRadius) * Math.sin(2 * Math.PI / 40 * i - Math.PI / 2 + Math.PI / 20))}
+                                        />
+                                    </G>
+                                    :
+                                    null
+                                    }
+                                    </G>
                             }
                         })
                     }

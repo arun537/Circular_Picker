@@ -13,6 +13,7 @@ import {
   ScrollView,
   View,
   StatusBar,
+  Text as React_Text
 } from 'react-native';
 
 import { Svg, G, Path, Text } from 'react-native-svg';
@@ -29,7 +30,15 @@ import {
 
 class App extends React.Component {
 
-  state = { startAngle: 0, angleLength: 0 }
+  state = { startAngle: 0, angleLength: 0, orignalNumber: new Date().getDate()}
+
+  // shouldComponentUpdate(){
+  //   if(this.state.fromNumber !== Math.round((((this.state.orignalAngle)-Math.PI/20+Math.PI/2)*20/Math.PI)+1)){
+  //     return true;
+  //   }else{
+  //     return false;
+  //   }
+  // }
 
   render() {
     var date = new Date();
@@ -39,7 +48,7 @@ class App extends React.Component {
         <CircularSlider
           startAngle={this.state.startAngle}
           angleLength={this.state.angleLength}
-          onUpdate={({ startAngle, angleLength }) => this.setState({ startAngle, angleLength })}
+          onUpdate={({ startAngle, angleLength, orignalNumber }) => this.setState({ startAngle, angleLength , orignalNumber})}
           segments={5}
           strokeWidth={10}
           radius={145}
@@ -48,13 +57,16 @@ class App extends React.Component {
           showClockFace
           clockFaceColor="#9d9d9d"
           bgCircleColor="transparent"
+          importantDates={[9, 13, 31]}
+          toCallback={this.setCircularState}
           stopIcon={<G scale="1" transform={{ translate: "0, 4" }}><G>
             <Text textAnchor="middle">{currentDate}</Text>
           </G></G>}
           startIcon={<G scale="1" transform={{ translate: "0, 4" }}><G>
-            <Text textAnchor="middle">13</Text>
+            <Text textAnchor="middle">{this.state.orignalNumber}</Text>
           </G></G>}
         />
+        <React_Text>{this.state.orignalNumber}</React_Text>
       </SafeAreaView>
     );
   }

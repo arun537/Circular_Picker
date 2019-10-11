@@ -67,6 +67,7 @@ export default class CircularSlider extends PureComponent {
     bgCircleColor: PropTypes.string,
     stopIcon: PropTypes.element,
     startIcon: PropTypes.element,
+    importantDates: PropTypes.arrayOf(PropTypes.number).isRequired,
   }
 
   static defaultProps = {
@@ -88,7 +89,6 @@ export default class CircularSlider extends PureComponent {
     this._sleepPanResponder = PanResponder.create({
       onMoveShouldSetPanResponder: (evt, gestureState) => true,
       onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
-
       onPanResponderMove: (evt, { moveX, moveY }) => {
         const { circleCenterX, circleCenterY } = this.state;
         const { angleLength, startAngle, onUpdate } = this.props;
@@ -104,11 +104,9 @@ export default class CircularSlider extends PureComponent {
 
         if (newAngleLength < 0) {
           newAngleLength += 2 * Math.PI;
-        }
-
-        // console.log(newAngle, ' ****** '+(newAngleLength % (2 * Math.PI)));
-
-        onUpdate({ startAngle: newAngle, angleLength: newAngleLength % (2 * Math.PI) });
+        } 
+        var orignalPrint = Math.floor((((Math.atan2(moveY - circleCenterY, moveX - circleCenterX))-Math.PI/20+Math.PI/2)*20/Math.PI)+1)
+        onUpdate({ startAngle: newAngle, angleLength: newAngleLength % (2 * Math.PI) , orignalNumber:  new Date(new Date().getTime() + (orignalPrint* 24 * 60 * 60 * 1000)).getDate()});
       },
     });
 
@@ -203,6 +201,7 @@ export default class CircularSlider extends PureComponent {
                 <CircularFace
                   r={radius - strokeWidth / 2}
                   stroke={clockFaceColor}
+                  importantDates={this.props.importantDates}
                 />
               )
             }
